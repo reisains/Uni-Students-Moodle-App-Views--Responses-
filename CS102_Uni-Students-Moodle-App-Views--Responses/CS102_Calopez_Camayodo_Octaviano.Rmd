@@ -1,0 +1,67 @@
+---
+title: "Uni-Students-Moodle-App-Views-Responses-"
+author: "Calopez, Camayodo, Octaviano"
+date: "2024-04-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+// load the excel file
+
+```{r}
+#install.packages("readxl")
+#install.packages("dplyr")
+library(readxl)
+library(dplyr)
+
+uni_students_satisfaction <- read_excel("Uni-Students-Moodle-App-Views-Responses.xlsx")
+
+head(uni_students_satisfaction)
+summary(uni_students_satisfaction)  
+View(uni_students_satisfaction)
+```
+
+// columns of questions
+
+```{r}
+
+question_columns <- c("U6", "RA1", "RA5", "OE7", "EOU3", "EOUS", "EOU6", "EU4", "A1", "AF1", "AF2", "Affect1", "SN1", "SN2", "SF2", "SF4", "PBC2", "PBC3", "PBC5", "FC3", "SE1", "SE4", "SE6", "SE7", "ANX1", "ANX2", "ANX3", "ANX4", "BI1", "BI2", "BI3")
+
+```
+
+```{r}
+
+# Change questions column to factor
+for (name in question_columns) {
+  uni_students_satisfaction[[column_name]] <- factor(uni_students_satisfaction[[name]],
+                              levels = c("1", "2", "3", "4", "5"),
+                              ordered = TRUE)
+}
+
+```
+
+```{r}
+
+View(uni_students_satisfaction)
+
+```
+
+
+install.packages("ggplot2")
+
+```{r}
+
+library(ggplot2)
+
+# Assuming "U6" is the column you want to plot
+ggplot(uni_students_satisfaction, aes(x = U6)) +
+  geom_bar(fill = "skyblue") +
+  labs(x = "U6 Column", y = "Count", title = "U6: ") +
+  scale_y_continuous(breaks = seq(0, 175, by = 5))
+
+
+```
+
