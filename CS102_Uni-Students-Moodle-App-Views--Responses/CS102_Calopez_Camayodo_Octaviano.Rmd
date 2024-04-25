@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-// load the excel file
+// load the csv file
 
 ```{r}
 #install.packages("readr")
@@ -34,23 +34,12 @@ question_columns <- c("U6", "RA1", "RA5", "OE7", "EOU3", "EOUS", "EOU6", "EU4", 
 
 ```{r}
 
-# Change questions column to factor
-for (name in question_columns) {
-  uni_students_satisfaction[[column_name]] <- factor(uni_students_satisfaction[[name]],
-                              levels = c("1", "2", "3", "4", "5"),
-                              ordered = TRUE)
-}
-
-```
-
-
-```{r}
-
 View(uni_students_satisfaction)
 
 ```
 
 //age
+
 ```{r}
 library(dplyr)
 
@@ -77,8 +66,8 @@ ggplot(uni_students_satisfaction, aes(x = age)) +
 
 ```
 
-
 //sex
+
 ```{r}
 ggplot(uni_students_satisfaction, aes(x = sex, fill = sex)) +
   geom_bar() +
@@ -92,7 +81,16 @@ ggplot(uni_students_satisfaction, aes(x = sex, fill = sex)) +
 ```
 
 
+------------------------------------------------------------------------
+
+```         
+      Performance Expectancy:
+```
+
+------------------------------------------------------------------------
+
 U6: How helpful do you think the Moodle app would be for your studies?
+
 ```{r}
 library(dplyr)
 
@@ -114,6 +112,7 @@ ggplot(U6_response_counts, aes(x = U6, y = n)) +
 ```
 
 RA1: Do you believe the Moodle app would make completing tasks easier for you?
+
 ```{r}
 library(dplyr)
 
@@ -134,8 +133,8 @@ ggplot(RA1_response_counts, aes(x = RA1, y = n)) +
 
 ```
 
-
 RA5: Will using the Moodle app improve your productivity as a student?
+
 ```{r}
 library(dplyr)
 
@@ -157,6 +156,7 @@ ggplot(RA5_response_counts, aes(x = RA5, y = n)) +
 ```
 
 OE7: Would using the Moodle app motivate you to do better academically?
+
 ```{r}
 library(dplyr)
 
@@ -176,7 +176,38 @@ ggplot(OE7_response_counts, aes(x = OE7, y = n)) +
   theme_minimal()
 ```
 
-EOU5: Do you expect to find the Moodle app easy to navigate?
+------------------------------------------------------------------------
+
+```         
+      Effort Expectancy:
+```
+
+------------------------------------------------------------------------
+
+EOU3: Do you expect to find the Moodle app easy to navigate?
+
+```{r}
+library(dplyr)
+
+EOU3_response_counts <- uni_students_satisfaction %>%
+  count(EOU3)
+
+EOU3_response_counts
+
+library(ggplot2)
+
+ggplot(EOU3_response_counts, aes(x = EOU3, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question EOU3",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+EOU5: How confident are you in your ability to learn to use the Moodle app effectively?
+
 ```{r}
 library(dplyr)
 
@@ -197,7 +228,8 @@ ggplot(EOU5_response_counts, aes(x = EOU5, y = n)) +
 
 ```
 
-EOU6: How confident are you in your ability to learn to use the Moodle app effectively?
+EOU6: Would you consider the Moodle app user-friendly?
+
 ```{r}
 library(dplyr)
 
@@ -215,17 +247,17 @@ ggplot(EOU6_response_counts, aes(x = EOU6, y = n)) +
        x = "Response",
        y = "Count") +
   theme_minimal()
-
 ```
 
-EU4: Would you consider the Moodle app user-friendly?
+EU4: Do you think learning to use the Moodle app would be easy for you?
+
 ```{r}
 library(dplyr)
 
 EU4_response_counts <- uni_students_satisfaction %>%
   count(EU4)
 
-EOU6_response_counts
+EU4_response_counts
 
 library(ggplot2)
 
@@ -238,7 +270,16 @@ ggplot(EU4_response_counts, aes(x = EU4, y = n)) +
   theme_minimal()
 ```
 
-A1: Do you think learning to use the Moodle app would be easy for you?
+------------------------------------------------------------------------
+
+```         
+      Attitude toward using technology:
+```
+
+------------------------------------------------------------------------
+
+A1: What do you think about including the Moodle app in your daily academic routine?
+
 ```{r}
 library(dplyr)
 
@@ -258,7 +299,8 @@ ggplot(A1_response_counts, aes(x = A1, y = n)) +
   theme_minimal()
 ```
 
-AF1: What do you think about including the Moodle app in your daily academic routine?
+AF1: Will the Moodle app make your learning experience more interesting?
+
 ```{r}
 library(dplyr)
 
@@ -278,7 +320,8 @@ ggplot(AF1_response_counts, aes(x = AF1, y = n)) +
   theme_minimal()
 ```
 
-AF2: Will the Moodle app make your learning experience more interesting?
+AF2: Would using the Moodle app make your academic tasks more enjoyable?
+
 ```{r}
 library(dplyr)
 
@@ -298,7 +341,8 @@ ggplot(AF2_response_counts, aes(x = AF2, y = n)) +
   theme_minimal()
 ```
 
-Affect1: Would using the Moodle app make your academic tasks more enjoyable?
+Affect1: How positive do you feel about using the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -317,8 +361,16 @@ ggplot(Affect1_response_counts, aes(x = Affect1, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+------------------------------------------------------------------------
 
-SN1: How positive do you feel about using the Moodle app?
+```         
+      Social influence:
+```
+
+------------------------------------------------------------------------
+
+SN1: How much do others influence your decision to use the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -338,7 +390,8 @@ ggplot(SN1_response_counts, aes(x = SN1, y = n)) +
   theme_minimal()
 ```
 
-SN2: How much do others influence your decision to use the Moodle app?
+SN2: How important is it to you that your peers support using the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -358,7 +411,8 @@ ggplot(SN2_response_counts, aes(x = SN2, y = n)) +
   theme_minimal()
 ```
 
-SF2: How important is it to you that your peers support using the Moodle app?
+SF2: Has the university's encouragement influenced your view of the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -378,7 +432,8 @@ ggplot(SF2_response_counts, aes(x = SF2, y = n)) +
   theme_minimal()
 ```
 
-SF4: Has the university's encouragement influenced your view of the Moodle app?
+SF4: How supportive do you find the university's administration in promoting the use of the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -397,8 +452,15 @@ ggplot(SF4_response_counts, aes(x = SF4, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+------------------------------------------------------------------------
 
-PBC2: How supportive do you find the university's administration in promoting the use of the Moodle app?
+```         
+      Facilitating Conditions:
+```
+
+------------------------------------------------------------------------
+PBC2: Do you think you have everything you need to use the Moodle app effectively?
+
 ```{r}
 library(dplyr)
 
@@ -418,7 +480,8 @@ ggplot(PBC2_response_counts, aes(x = PBC2, y = n)) +
   theme_minimal()
 ```
 
-PBC3: Do you think you have everything you need to use the Moodle app effectively?
+PBC3: Do you feel confident in your knowledge of how to use the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -438,7 +501,29 @@ ggplot(PBC3_response_counts, aes(x = PBC3, y = n)) +
   theme_minimal()
 ```
 
-FC3: Do you feel confident in your knowledge of how to use the Moodle app?
+PBC5: Have you faced any issues using the Moodle app with other systems?
+
+```{r}
+library(dplyr)
+
+PBC5_response_counts <- uni_students_satisfaction %>%
+  count(PBC5)
+
+PBC5_response_counts
+
+library(ggplot2)
+
+ggplot(PBC5_response_counts, aes(x = PBC5, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question PBC5",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+FC3: How easy is it to get help if you encounter problems with the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -457,8 +542,15 @@ ggplot(FC3_response_counts, aes(x = FC3, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+------------------------------------------------------------------------
 
-SE1: Have you faced any issues using the Moodle app with other systems?
+```         
+      Self-Efficacy:
+```
+
+------------------------------------------------------------------------
+SE1: How confident are you in your ability to use the Moodle app on your own?
+
 ```{r}
 library(dplyr)
 
@@ -478,7 +570,8 @@ ggplot(SE1_response_counts, aes(x = SE1, y = n)) +
   theme_minimal()
 ```
 
-SE4: How easy is it to get help if you encounter problems with the Moodle app?
+SE4: Would you feel comfortable asking for help if you needed it while using the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -498,7 +591,8 @@ ggplot(SE4_response_counts, aes(x = SE4, y = n)) +
   theme_minimal()
 ```
 
-SE6: How confident are you in your ability to use the Moodle app on your own?
+SE6: Do you think having enough time would help you use the Moodle app better?
+
 ```{r}
 library(dplyr)
 
@@ -518,7 +612,8 @@ ggplot(SE6_response_counts, aes(x = SE6, y = n)) +
   theme_minimal()
 ```
 
-SE7: Would you feel comfortable asking for help if you needed it while using the Moodle app?
+SE7: How helpful do you find the built-in help feature in the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -537,8 +632,15 @@ ggplot(SE7_response_counts, aes(x = SE7, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+------------------------------------------------------------------------
 
-ANX1: Do you think having enough time would help you use the Moodle app better?
+```         
+      Anxiety:
+```
+
+------------------------------------------------------------------------
+ANX1: Do you feel nervous about using the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -558,7 +660,8 @@ ggplot(ANX1_response_counts, aes(x = ANX1, y = n)) +
   theme_minimal()
 ```
 
-ANX2: How helpful do you find the built-in help feature in the Moodle app?
+ANX2: How worried are you about accidentally losing information while using the Moodle app?
+
 ```{r}
 library(dplyr)
 
@@ -578,7 +681,8 @@ ggplot(ANX2_response_counts, aes(x = ANX2, y = n)) +
   theme_minimal()
 ```
 
-ANX3: Do you feel nervous about using the Moodle app?
+ANX3: Do you hesitate to use the Moodle app because you're afraid of making mistakes?
+
 ```{r}
 library(dplyr)
 
@@ -598,7 +702,8 @@ ggplot(ANX3_response_counts, aes(x = ANX3, y = n)) +
   theme_minimal()
 ```
 
-ANX4: How worried are you about accidentally losing information while using the Moodle app?
+ANX4: Would you say the Moodle app is intimidating to use?
+
 ```{r}
 library(dplyr)
 
@@ -617,8 +722,15 @@ ggplot(ANX4_response_counts, aes(x = ANX4, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+------------------------------------------------------------------------
 
-BI1: Would you say the Moodle app is intimidating to use?
+```         
+     Behavioral Intention to Use the System:
+```
+
+------------------------------------------------------------------------
+BI1: Do you plan to start using the Moodle app in your studies within the next few months?
+
 ```{r}
 library(dplyr)
 
@@ -638,7 +750,8 @@ ggplot(BI1_response_counts, aes(x = BI1, y = n)) +
   theme_minimal()
 ```
 
-BI2: Do you plan to start using the Moodle app in your studies within the next few months?
+BI2: How likely are you to use the Moodle app for your academic work in the next few months?
+
 ```{r}
 library(dplyr)
 
@@ -658,7 +771,8 @@ ggplot(BI2_response_counts, aes(x = BI2, y = n)) +
   theme_minimal()
 ```
 
-BI3: How likely are you to use the Moodle app for your academic work in the next few months?
+BI3: Have you already planned to integrate the Moodle app into your academic routine soon?
+
 ```{r}
 library(dplyr)
 
@@ -672,31 +786,8 @@ library(ggplot2)
 ggplot(BI3_response_counts, aes(x = BI3, y = n)) +
   geom_bar(stat = "identity", fill = "skyblue", color = "black") +
   geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
-  labs(title = "Responses for Question ANX2",
+  labs(title = "Responses for Question BI3",
        x = "Response",
        y = "Count") +
   theme_minimal()
 ```
-
-
-EOUS: Have you already planned to integrate the Moodle app into your academic routine soon?
-```{r}
-library(dplyr)
-
-EOUS_response_counts <- uni_students_satisfaction %>%
-  count(EOUS)
-
-EOUS_response_counts
-
-library(ggplot2)
-
-# Assuming `EOUS_response_counts` contains the counts of responses for the "EOUS" question column
-ggplot(EOUS_response_counts, aes(x = EOUS, y = n)) +
-  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
-  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
-  labs(title = "Responses for Question EOUS",
-       x = "Response",
-       y = "Count") +
-  theme_minimal()
-```
-
