@@ -12,12 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 // load the excel file
 
 ```{r}
-#install.packages("readxl")
+#install.packages("readr")
 #install.packages("dplyr")
-library(readxl)
+library(readr)
 library(dplyr)
 
-uni_students_satisfaction <- read_excel("Uni-Students-Moodle-App-Views-Responses.xlsx")
+uni_students_satisfaction <- read_csv("Uni-Students-Moodle-App-Views-Responses.csv")
 
 head(uni_students_satisfaction)
 summary(uni_students_satisfaction)  
@@ -43,25 +43,660 @@ for (name in question_columns) {
 
 ```
 
+
 ```{r}
 
 View(uni_students_satisfaction)
 
 ```
 
-
-install.packages("ggplot2")
-
+//age
 ```{r}
+library(dplyr)
+
+respondents_age <- uni_students_satisfaction %>%
+  summarize(
+    total_count = n(),                # Total count of records
+    mean_age = mean(age, na.rm = TRUE),        # Mean age
+    median_age = median(age, na.rm = TRUE),    # Median age
+    min_age = min(age, na.rm = TRUE),          # Minimum age
+    max_age = max(age, na.rm = TRUE)           # Maximum age
+  )
+
+respondents_age
+
+ggplot(uni_students_satisfaction, aes(x = age)) +
+  geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3, color = "black") + # Add count numbers
+  labs(title = "Distribution of Age",
+       x = "Age",
+       y = "Frequency") +
+  scale_x_continuous(breaks = seq(18, 26, by = 1)) +
+  theme_minimal()
+
+
+```
+
+
+//sex
+```{r}
+ggplot(uni_students_satisfaction, aes(x = sex, fill = sex)) +
+  geom_bar() +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3, color = "black") + # Add count numbers
+  labs(title = "Distribution of Sex",
+       x = "Sex",
+       y = "Frequency") +
+  theme_minimal()
+
+
+```
+
+
+U6: How helpful do you think the Moodle app would be for your studies?
+```{r}
+library(dplyr)
+
+U6_response_counts <- uni_students_satisfaction %>%
+  count(U6)
+
+U6_response_counts
 
 library(ggplot2)
 
-# Assuming "U6" is the column you want to plot
-ggplot(uni_students_satisfaction, aes(x = U6)) +
-  geom_bar(fill = "skyblue") +
-  labs(x = "U6 Column", y = "Count", title = "U6: ") +
-  scale_y_continuous(breaks = seq(0, 175, by = 5))
+ggplot(U6_response_counts, aes(x = U6, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question U6",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+RA1: Do you believe the Moodle app would make completing tasks easier for you?
+```{r}
+library(dplyr)
+
+RA1_response_counts <- uni_students_satisfaction %>%
+  count(RA1)
+
+RA1_response_counts
+
+library(ggplot2)
+
+ggplot(RA1_response_counts, aes(x = RA1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question RA1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
 
 
+RA5: Will using the Moodle app improve your productivity as a student?
+```{r}
+library(dplyr)
+
+RA5_response_counts <- uni_students_satisfaction %>%
+  count(RA5)
+
+RA5_response_counts
+
+library(ggplot2)
+
+ggplot(RA5_response_counts, aes(x = RA5, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question RA5",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+OE7: Would using the Moodle app motivate you to do better academically?
+```{r}
+library(dplyr)
+
+OE7_response_counts <- uni_students_satisfaction %>%
+  count(OE7)
+
+OE7_response_counts
+
+library(ggplot2)
+
+ggplot(OE7_response_counts, aes(x = OE7, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question OE7",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+EOU5: Do you expect to find the Moodle app easy to navigate?
+```{r}
+library(dplyr)
+
+EOU5_response_counts <- uni_students_satisfaction %>%
+  count(EOU5)
+
+EOU5_response_counts
+
+library(ggplot2)
+
+ggplot(EOU5_response_counts, aes(x = EOU5, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question EOU5",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+EOU6: How confident are you in your ability to learn to use the Moodle app effectively?
+```{r}
+library(dplyr)
+
+EOU6_response_counts <- uni_students_satisfaction %>%
+  count(EOU6)
+
+EOU6_response_counts
+
+library(ggplot2)
+
+ggplot(EOU6_response_counts, aes(x = EOU6, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question EOU6",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+EU4: Would you consider the Moodle app user-friendly?
+```{r}
+library(dplyr)
+
+EU4_response_counts <- uni_students_satisfaction %>%
+  count(EU4)
+
+EOU6_response_counts
+
+library(ggplot2)
+
+ggplot(EU4_response_counts, aes(x = EU4, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question EU4",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+A1: Do you think learning to use the Moodle app would be easy for you?
+```{r}
+library(dplyr)
+
+A1_response_counts <- uni_students_satisfaction %>%
+  count(A1)
+
+A1_response_counts
+
+library(ggplot2)
+
+ggplot(A1_response_counts, aes(x = A1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question A1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+AF1: What do you think about including the Moodle app in your daily academic routine?
+```{r}
+library(dplyr)
+
+AF1_response_counts <- uni_students_satisfaction %>%
+  count(AF1)
+
+AF1_response_counts
+
+library(ggplot2)
+
+ggplot(AF1_response_counts, aes(x = AF1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question AF1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+AF2: Will the Moodle app make your learning experience more interesting?
+```{r}
+library(dplyr)
+
+AF2_response_counts <- uni_students_satisfaction %>%
+  count(AF2)
+
+AF2_response_counts
+
+library(ggplot2)
+
+ggplot(AF2_response_counts, aes(x = AF2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question AF2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+Affect1: Would using the Moodle app make your academic tasks more enjoyable?
+```{r}
+library(dplyr)
+
+Affect1_response_counts <- uni_students_satisfaction %>%
+  count(Affect1)
+
+Affect1_response_counts
+
+library(ggplot2)
+
+ggplot(Affect1_response_counts, aes(x = Affect1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question Affect1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SN1: How positive do you feel about using the Moodle app?
+```{r}
+library(dplyr)
+
+SN1_response_counts <- uni_students_satisfaction %>%
+  count(SN1)
+
+SN1_response_counts
+
+library(ggplot2)
+
+ggplot(SN1_response_counts, aes(x = SN1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SN1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SN2: How much do others influence your decision to use the Moodle app?
+```{r}
+library(dplyr)
+
+SN2_response_counts <- uni_students_satisfaction %>%
+  count(SN2)
+
+SN2_response_counts
+
+library(ggplot2)
+
+ggplot(SN2_response_counts, aes(x = SN2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SN2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SF2: How important is it to you that your peers support using the Moodle app?
+```{r}
+library(dplyr)
+
+SF2_response_counts <- uni_students_satisfaction %>%
+  count(SF2)
+
+SF2_response_counts
+
+library(ggplot2)
+
+ggplot(SF2_response_counts, aes(x = SF2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SF2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SF4: Has the university's encouragement influenced your view of the Moodle app?
+```{r}
+library(dplyr)
+
+SF4_response_counts <- uni_students_satisfaction %>%
+  count(SF4)
+
+SF4_response_counts
+
+library(ggplot2)
+
+ggplot(SF4_response_counts, aes(x = SF4, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SF4",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+PBC2: How supportive do you find the university's administration in promoting the use of the Moodle app?
+```{r}
+library(dplyr)
+
+PBC2_response_counts <- uni_students_satisfaction %>%
+  count(PBC2)
+
+PBC2_response_counts
+
+library(ggplot2)
+
+ggplot(PBC2_response_counts, aes(x = PBC2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question PBC2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+PBC3: Do you think you have everything you need to use the Moodle app effectively?
+```{r}
+library(dplyr)
+
+PBC3_response_counts <- uni_students_satisfaction %>%
+  count(PBC3)
+
+PBC3_response_counts
+
+library(ggplot2)
+
+ggplot(PBC3_response_counts, aes(x = PBC3, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question PBC3",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+FC3: Do you feel confident in your knowledge of how to use the Moodle app?
+```{r}
+library(dplyr)
+
+FC3_response_counts <- uni_students_satisfaction %>%
+  count(FC3)
+
+FC3_response_counts
+
+library(ggplot2)
+
+ggplot(FC3_response_counts, aes(x = FC3, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question FC3",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SE1: Have you faced any issues using the Moodle app with other systems?
+```{r}
+library(dplyr)
+
+SE1_response_counts <- uni_students_satisfaction %>%
+  count(SE1)
+
+SE1_response_counts
+
+library(ggplot2)
+
+ggplot(SE1_response_counts, aes(x = SE1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SE1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SE4: How easy is it to get help if you encounter problems with the Moodle app?
+```{r}
+library(dplyr)
+
+SE4_response_counts <- uni_students_satisfaction %>%
+  count(SE4)
+
+SE4_response_counts
+
+library(ggplot2)
+
+ggplot(SE4_response_counts, aes(x = SE4, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SE4",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SE6: How confident are you in your ability to use the Moodle app on your own?
+```{r}
+library(dplyr)
+
+SE6_response_counts <- uni_students_satisfaction %>%
+  count(SE6)
+
+SE6_response_counts
+
+library(ggplot2)
+
+ggplot(SE6_response_counts, aes(x = SE6, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SE6",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+SE7: Would you feel comfortable asking for help if you needed it while using the Moodle app?
+```{r}
+library(dplyr)
+
+SE7_response_counts <- uni_students_satisfaction %>%
+  count(SE7)
+
+SE7_response_counts
+
+library(ggplot2)
+
+ggplot(SE7_response_counts, aes(x = SE7, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question SE7",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+ANX1: Do you think having enough time would help you use the Moodle app better?
+```{r}
+library(dplyr)
+
+ANX1_response_counts <- uni_students_satisfaction %>%
+  count(ANX1)
+
+ANX1_response_counts
+
+library(ggplot2)
+
+ggplot(ANX1_response_counts, aes(x = ANX1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question ANX1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+ANX2: How helpful do you find the built-in help feature in the Moodle app?
+```{r}
+library(dplyr)
+
+ANX2_response_counts <- uni_students_satisfaction %>%
+  count(ANX2)
+
+ANX2_response_counts
+
+library(ggplot2)
+
+ggplot(ANX2_response_counts, aes(x = ANX2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question ANX2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+ANX3: Do you feel nervous about using the Moodle app?
+```{r}
+library(dplyr)
+
+ANX3_response_counts <- uni_students_satisfaction %>%
+  count(ANX3)
+
+ANX3_response_counts
+
+library(ggplot2)
+
+ggplot(ANX3_response_counts, aes(x = ANX3, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question ANX3",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+ANX4: How worried are you about accidentally losing information while using the Moodle app?
+```{r}
+library(dplyr)
+
+ANX4_response_counts <- uni_students_satisfaction %>%
+  count(ANX4)
+
+ANX4_response_counts
+
+library(ggplot2)
+
+ggplot(ANX4_response_counts, aes(x = ANX4, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question ANX4",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+BI1: Would you say the Moodle app is intimidating to use?
+```{r}
+library(dplyr)
+
+BI1_response_counts <- uni_students_satisfaction %>%
+  count(BI1)
+
+BI1_response_counts
+
+library(ggplot2)
+
+ggplot(BI1_response_counts, aes(x = BI1, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question BI1",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+BI2: Do you plan to start using the Moodle app in your studies within the next few months?
+```{r}
+library(dplyr)
+
+BI2_response_counts <- uni_students_satisfaction %>%
+  count(BI2)
+
+BI2_response_counts
+
+library(ggplot2)
+
+ggplot(BI2_response_counts, aes(x = BI2, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question BI2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+BI3: How likely are you to use the Moodle app for your academic work in the next few months?
+```{r}
+library(dplyr)
+
+BI3_response_counts <- uni_students_satisfaction %>%
+  count(BI3)
+
+BI3_response_counts
+
+library(ggplot2)
+
+ggplot(BI3_response_counts, aes(x = BI3, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question ANX2",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
+```
+
+
+EOUS: Have you already planned to integrate the Moodle app into your academic routine soon?
+```{r}
+library(dplyr)
+
+EOUS_response_counts <- uni_students_satisfaction %>%
+  count(EOUS)
+
+EOUS_response_counts
+
+library(ggplot2)
+
+# Assuming `EOUS_response_counts` contains the counts of responses for the "EOUS" question column
+ggplot(EOUS_response_counts, aes(x = EOUS, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  geom_text(aes(label = n), vjust = -0.5) +  # Add labels with count above each bar
+  labs(title = "Responses for Question EOUS",
+       x = "Response",
+       y = "Count") +
+  theme_minimal()
 ```
 
