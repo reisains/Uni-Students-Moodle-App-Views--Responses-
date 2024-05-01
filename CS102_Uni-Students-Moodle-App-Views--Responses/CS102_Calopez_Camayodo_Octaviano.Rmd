@@ -21,20 +21,20 @@ uni_students_satisfaction <- read_csv("Uni-Students-Moodle-App-Views-Responses.c
 
 head(uni_students_satisfaction)
 summary(uni_students_satisfaction)  
-View(uni_students_satisfaction)
+#View(uni_students_satisfaction)
 ```
 
 // columns of questions
 
 ```{r}
 
-question_columns <- c("U6", "RA1", "RA5", "OE7", "EOU3", "EOUS", "EOU6", "EU4", "A1", "AF1", "AF2", "Affect1", "SN1", "SN2", "SF2", "SF4", "PBC2", "PBC3", "PBC5", "FC3", "SE1", "SE4", "SE6", "SE7", "ANX1", "ANX2", "ANX3", "ANX4", "BI1", "BI2", "BI3")
+question_columns <- c("U6", "RA1", "RA5", "OE7", "EOU3", "EOU5", "EOU6", "EU4", "A1", "AF1", "AF2", "Affect1", "SN1", "SN2", "SF2", "SF4", "PBC2", "PBC3", "PBC5", "FC3", "SE1", "SE4", "SE6", "SE7", "ANX1", "ANX2", "ANX3", "ANX4", "BI1", "BI2", "BI3")
 
 ```
 
 ```{r}
 
-View(uni_students_satisfaction)
+#View(uni_students_satisfaction)
 
 ```
 
@@ -42,7 +42,7 @@ View(uni_students_satisfaction)
 
 ```{r}
 library(dplyr)
-
+library(ggplot2)
 respondents_age <- uni_students_satisfaction %>%
   summarize(
     total_count = n(),                # Total count of records
@@ -791,3 +791,83 @@ ggplot(BI3_response_counts, aes(x = BI3, y = n)) +
        y = "Count") +
   theme_minimal()
 ```
+
+```{r}
+# Load the VIM package
+library(VIM)
+
+# Draw an aggregation plot of biopics
+ uni_students_satisfaction%>% 
+	aggr(combined = TRUE, numbers = TRUE)
+
+```
+
+```{r}
+# Define the determinant categories and their corresponding questions
+determinants <- list(
+  "Performance Expectancy" = c("U6", "RA1", "RA5", "OE7"),
+  "Effort Expectancy" = c("EOU3", "EOU5", "EOU6", "EU4"),
+  "Attitude Toward Using Technology" = c("A1", "AF1", "AF2", "Affect1"),
+  "Social Influence" = c("SN1", "SN2", "SF2", "SF4"),
+  "Facilitating Conditions" = c("PBC2", "PBC3", "PBC5", "FC3"),
+  "Self-Efficacy" = c("SE1", "SE4", "SE6", "SE7"),
+  "Anxiety" = c("ANX1", "ANX2", "ANX3", "ANX4"),
+  "Behavioral Intention to Use the System" = c("BI1", "BI2", "BI3")
+)
+
+# Initialize an empty data frame to store results
+determinants_stats <- data.frame(Determinant = character(), Mean = numeric(), SD = numeric(), stringsAsFactors = FALSE)
+
+# Loop through each determinant
+for (determinant in names(determinants)) {
+  # Extract questions corresponding to the determinant
+  questions <- determinants[[determinant]]
+  
+  # Subset the dataset for the questions corresponding to the determinant
+  subset_data <- uni_students_satisfaction[, questions]
+  
+  # Compute mean and standard deviation for each question
+  means <- apply(subset_data, 2, mean, na.rm = TRUE)
+  sds <- apply(subset_data, 2, sd, na.rm = TRUE)
+  
+  # Compute mean and standard deviation for the determinant
+  determinant_mean <- mean(means)
+  determinant_sd <- sd(means)
+  
+  # Add the determinant stats to the data frame
+  determinants_stats <- rbind(determinants_stats, data.frame(Determinant = determinant, Mean = determinant_mean, SD = determinant_sd))
+}
+
+# View the resulting data frame
+print(determinants_stats)
+
+
+```
+
+
+The results of the code provide insights into different aspects of what students think about the Moodle app. For example, it tells us about students' feelings and expectations. Performance Expectancy shows how much students believe the app is useful for their studies. Attitude Toward Using Technology reveals how students feel about using the app. Social Influence looks at how friends and school support influence students' decisions to use the app. Facilitating Conditions show if students feel confident in their technical skills and support resources. Self-Efficacy tells us if students are comfortable using the app on their own. Behavioral Intention to Use the System shows if students are willing to use the app for their studies.These insights aid in understanding students' overall perception of the app, identifying areas of confidence and potential concerns, such as anxiety despite perceived ease of use.
+
+```{r}
+library(ggplot2)
+
+
+bar_colors <- c("#1f77b4", "#ff7f0e")
+
+# Create the grouped bar plot
+ggplot(determinants_stats, aes(x = Determinant, y = Mean, fill = Determinant)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.7) +
+  geom_errorbar(aes(ymin = Mean - SD, ymax = Mean + SD), width = 0.2, position = position_dodge(width = 0.9)) +
+  labs(title = "Mean and Standard Deviation of Determinants",
+       x = "Determinant",
+       y = "Mean",
+       fill = "Determinant") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = rep(bar_colors, length(unique(determinants_stats$Determinant)))) +
+  guides(fill = FALSE)  # Hide legend for fill color
+
+
+```
+
+
+
